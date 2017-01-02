@@ -11,7 +11,7 @@ RUN rm setup_4.x
 RUN apt-get install nodejs -y
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/bin/composer
-RUN composer global require drush/drush:7.1.* --no-interaction
+RUN composer global require drush/drush:8.x-dev --no-interaction
 RUN mkdir -p ~/.drush
 RUN curl https://github.com/pantheon-systems/terminus/releases/download/0.11.0/terminus.phar -L -o /usr/local/bin/terminus && chmod +x /usr/local/bin/terminus
 CMD ["/bin/bash"]
