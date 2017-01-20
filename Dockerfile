@@ -16,7 +16,7 @@ RUN mkdir -p ~/.drush
 RUN ln -s ~/.composer/vendor/bin/drush /usr/bin/drush
 RUN curl https://github.com/pantheon-systems/terminus/releases/download/0.11.2/terminus.phar -L -o /usr/local/bin/terminus && chmod +x /usr/local/bin/terminus
 # Selenium support.
-RUN apt-get install xvfb
+RUN apt-get install xvfb -y
 RUN mkdir -p $HOME/google-chrome && cd $HOME/google-chrome && curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN dpkg -i $HOME/google-chrome/google-chrome.deb ; apt-get update -y ; apt-get install -f -y
 RUN wget https://chromedriver.storage.googleapis.com/2.25/chromedriver_linux64.zip
