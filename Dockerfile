@@ -19,7 +19,7 @@ RUN curl https://github.com/pantheon-systems/terminus/releases/download/0.11.2/t
 RUN apt-get install xvfb -y
 RUN mkdir -p $HOME/google-chrome && cd $HOME/google-chrome && curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN dpkg -i $HOME/google-chrome/google-chrome.deb ; apt-get update -y ; apt-get install -f -y
-RUN wget https://chromedriver.storage.googleapis.com/2.27/chromedriver_linux64.zip
+RUN wget https://chromedriver.storage.googleapis.com/2.28/chromedriver_linux64.zip
 RUN unzip chromedriver_linux64.zip
 RUN ln -s $PWD/chromedriver /usr/bin/chromedriver
 RUN apt-get install software-properties-common python-software-properties -y
