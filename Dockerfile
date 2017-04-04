@@ -1,6 +1,8 @@
 FROM linode/lamp
 MAINTAINER Kevin Porras <kporras07@gmail.com>
 
+RUN apt-get update -y
+RUN apt-get install software-properties-common -y
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update -y
 RUN apt-get install -y build-essential curl wget git php5.6-curl unzip php5.6-mysql php5.6-gd ssh-client openssh-client keychain
