@@ -33,10 +33,6 @@ RUN xvfb-run java -jar selenium-server-standalone-3.0.1.jar > /dev/null 2>&1 &
 # Wraith support.
 RUN \curl -sSL https://get.rvm.io | bash -s stable
 RUN \curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
-RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm \
-    && rvm install 2.4 \
-    && rvm use 2.4 \
-    && gem install wraith"
 RUN apt-get install libicu-dev imagemagick rake -y --force-yes
 RUN npm install -g casperjs phantomjs
 CMD ["/bin/bash"]
