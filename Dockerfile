@@ -25,7 +25,6 @@ RUN dpkg -i $HOME/google-chrome/google-chrome.deb ; apt-get update -y ; apt-get 
 RUN wget https://chromedriver.storage.googleapis.com/2.28/chromedriver_linux64.zip
 RUN unzip chromedriver_linux64.zip
 RUN ln -s $PWD/chromedriver /usr/bin/chromedriver
-RUN apt-get install software-properties-common python-software-properties -y
 RUN add-apt-repository ppa:openjdk-r/ppa -y
 RUN apt-get update -y
 RUN apt-get install openjdk-8-jdk -y
@@ -38,6 +37,6 @@ RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm \
     && rvm install 2.4 \
     && rvm use 2.4 \
     && gem install wraith"
-RUN apt-get install libicu-dev imagemagick rake -y
+RUN apt-get install libicu-dev imagemagick rake -y --force-yes
 RUN npm install -g casperjs phantomjs
 CMD ["/bin/bash"]
