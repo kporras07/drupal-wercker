@@ -5,7 +5,7 @@ RUN apt-get update -y
 RUN apt-get install software-properties-common -y
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update -y
-RUN apt-get install -y --force-yes build-essential curl wget git php5.6-cli php5.6-curl unzip php-mysql php5.6-mysql php5.6-gd ssh-client openssh-client keychain
+RUN apt-get install -y --force-yes build-essential curl wget git php5.6-cli php5.6-curl unzip php-mysql php5.6-mysql php5.6-gd ssh-client openssh-client keychain php5.6-gd php5.6-mbstring php5.6-common php5.6-xml
 RUN eval `ssh-agent`
 RUN wget -q https://deb.nodesource.com/setup_4.x
 RUN chmod +x setup_4.x
