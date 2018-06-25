@@ -1,40 +1,50 @@
-FROM linode/lamp
+FROM php:7.0-apache
 MAINTAINER Kevin Porras <kporras07@gmail.com>
 
-RUN apt-get update -y
-RUN apt-get install -y build-essential curl wget git php5-curl unzip php5-mysql php5-gd ssh-client openssh-client keychain
+# Miscellaneous.
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential curl wget git unzip ssh-client openssh-client keychain mysql-server
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libpng-dev zlib1g-dev
+RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql gd zip
+RUN mkdir /var/run/mysqld
+RUN chown -R mysql:root /var/run/mysqld
+RUN service mysql start && mysql -u root -e "create database drupal"
+
+# SSH
 RUN eval `ssh-agent`
-RUN wget -q https://deb.nodesource.com/setup_4.x
-RUN chmod +x setup_4.x
-RUN ./setup_4.x
-RUN rm setup_4.x
-RUN apt-get install nodejs -y
+RUN mkdir -p /root/.ssh/
+RUN echo 'Host *' >> /root/.ssh/config
+RUN echo '   StrictHostKeyChecking no' >> /root/.ssh/config
+
+# Nodejs
+RUN wget -q https://deb.nodesource.com/setup_6.x
+RUN apt-get install -y gnupg
+RUN chmod +x setup_6.x
+RUN ./setup_6.x
+RUN rm setup_6.x
+RUN DEBIAN_FRONTEND=noninteractive apt-get install nodejs -y
+RUN npm install -g grunt-cli
+
+# Ahoy
+RUN wget -q https://github.com/ahoy-cli/ahoy/releases/download/2.0.0/ahoy-bin-linux-amd64 -O /usr/local/bin/ahoy && chmod +x /usr/local/bin/ahoy
+
+# Composer and terminus
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/bin/composer
 RUN composer global require drush/drush:8.x-dev --no-interaction
 RUN mkdir -p ~/.drush
 RUN ln -s ~/.composer/vendor/bin/drush /usr/bin/drush
-RUN curl https://github.com/pantheon-systems/terminus/releases/download/0.11.2/terminus.phar -L -o /usr/local/bin/terminus && chmod +x /usr/local/bin/terminus
-# Selenium support.
-RUN apt-get install xvfb -y
-RUN mkdir -p $HOME/google-chrome && cd $HOME/google-chrome && curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i $HOME/google-chrome/google-chrome.deb ; apt-get update -y ; apt-get install -f -y
-RUN wget https://chromedriver.storage.googleapis.com/2.28/chromedriver_linux64.zip
-RUN unzip chromedriver_linux64.zip
-RUN ln -s $PWD/chromedriver /usr/bin/chromedriver
-RUN apt-get install software-properties-common python-software-properties -y
-RUN add-apt-repository ppa:openjdk-r/ppa -y
-RUN apt-get update -y
-RUN apt-get install openjdk-8-jdk -y
-RUN wget http://selenium-release.storage.googleapis.com/3.0/selenium-server-standalone-3.0.1.jar
-RUN xvfb-run java -jar selenium-server-standalone-3.0.1.jar > /dev/null 2>&1 &
-# Wraith support.
-RUN \curl -sSL https://get.rvm.io | bash -s stable
-RUN \curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
+RUN curl -O https://raw.githubusercontent.com/pantheon-systems/terminus-installer/master/builds/installer.phar && php installer.phar install
+
+# Ruby
+RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+RUN curl -sSL https://get.rvm.io | bash -s stable
+RUN curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
 RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm \
     && rvm install 2.4 \
     && rvm use 2.4 \
-    && gem install wraith"
-RUN apt-get install libicu-dev imagemagick rake -y
-RUN npm install -g casperjs phantomjs
-CMD ["/bin/bash"]
+    && gem install compass"
+
+COPY cmd.sh ./cmd.sh
+RUN chmod +x cmd.sh
+CMD ["./cmd.sh"]
