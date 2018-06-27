@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.1-apache
 MAINTAINER Kevin Porras <kporras07@gmail.com>
 
 # Miscellaneous.
@@ -45,6 +45,7 @@ RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm \
     && rvm use 2.4 \
     && gem install compass"
 
+COPY ./php.ini /usr/local/etc/php/conf.d/docker-php.ini
 COPY cmd.sh ./cmd.sh
 RUN chmod +x cmd.sh
 CMD ["./cmd.sh"]
