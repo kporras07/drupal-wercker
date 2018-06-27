@@ -17,13 +17,12 @@ RUN echo 'Host *' >> /root/.ssh/config
 RUN echo '   StrictHostKeyChecking no' >> /root/.ssh/config
 
 # Nodejs
-RUN wget -q https://deb.nodesource.com/setup_6.x
+RUN wget -q https://deb.nodesource.com/setup_4.x
 RUN apt-get install -y gnupg
-RUN chmod +x setup_6.x
-RUN ./setup_6.x
-RUN rm setup_6.x
+RUN chmod +x setup_4.x
+RUN ./setup_4.x
+RUN rm setup_4.x
 RUN DEBIAN_FRONTEND=noninteractive apt-get install nodejs -y
-RUN npm install -g grunt-cli
 
 # Ahoy
 RUN wget -q https://github.com/ahoy-cli/ahoy/releases/download/2.0.0/ahoy-bin-linux-amd64 -O /usr/local/bin/ahoy && chmod +x /usr/local/bin/ahoy
@@ -35,15 +34,6 @@ RUN composer global require drush/drush:8.x-dev --no-interaction
 RUN mkdir -p ~/.drush
 RUN ln -s ~/.composer/vendor/bin/drush /usr/bin/drush
 RUN curl -O https://raw.githubusercontent.com/pantheon-systems/terminus-installer/master/builds/installer.phar && php installer.phar install
-
-# Ruby
-RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-RUN curl -sSL https://get.rvm.io | bash -s stable
-RUN curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
-RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm \
-    && rvm install 2.4 \
-    && rvm use 2.4 \
-    && gem install compass"
 
 COPY ./php.ini /usr/local/etc/php/conf.d/docker-php.ini
 COPY cmd.sh ./cmd.sh
