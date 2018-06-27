@@ -17,11 +17,11 @@ RUN echo 'Host *' >> /root/.ssh/config
 RUN echo '   StrictHostKeyChecking no' >> /root/.ssh/config
 
 # Nodejs
-RUN wget -q https://deb.nodesource.com/setup_4.x
+RUN wget -q https://deb.nodesource.com/setup_8.x
 RUN apt-get install -y gnupg
-RUN chmod +x setup_4.x
-RUN ./setup_4.x
-RUN rm setup_4.x
+RUN chmod +x setup_8.x
+RUN ./setup_8.x
+RUN rm setup_8.x
 RUN DEBIAN_FRONTEND=noninteractive apt-get install nodejs -y
 
 # Ahoy
