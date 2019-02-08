@@ -14,7 +14,7 @@ RUN mv composer.phar /usr/bin/composer
 RUN composer global require drush/drush:8.x-dev --no-interaction
 RUN mkdir -p ~/.drush
 RUN ln -s ~/.composer/vendor/bin/drush /usr/bin/drush
-RUN curl https://github.com/pantheon-systems/terminus/releases/download/0.11.2/terminus.phar -L -o /usr/local/bin/terminus && chmod +x /usr/local/bin/terminus
+RUN curl -O https://raw.githubusercontent.com/pantheon-systems/terminus-installer/master/builds/installer.phar && php installer.phar install
 # Selenium support.
 RUN apt-get install xvfb -y
 RUN mkdir -p $HOME/google-chrome && cd $HOME/google-chrome && curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
