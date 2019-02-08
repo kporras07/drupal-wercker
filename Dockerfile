@@ -29,6 +29,11 @@ RUN apt-get install openjdk-8-jdk -y
 RUN wget http://selenium-release.storage.googleapis.com/3.0/selenium-server-standalone-3.0.1.jar
 RUN xvfb-run java -jar selenium-server-standalone-3.0.1.jar > /dev/null 2>&1 &
 # Wraith support.
+
+# Install dependencies for running visual regression tests with Wraith.
+RUN apt-get install gnupg2 -y
+RUN gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
 RUN \curl -sSL https://get.rvm.io | bash -s stable
 RUN \curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
 RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm \
