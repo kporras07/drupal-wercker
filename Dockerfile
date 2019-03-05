@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libpng-dev zlib1g-dev
 RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql gd zip
 RUN mkdir /var/run/mysqld
 RUN chown -R mysql:root /var/run/mysqld
-RUN service mysql start && mysql -u root -e "create database drupal"
+RUN service mysql start && mysql -u root -e "create database drupal; ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
 
 # SSH
 RUN eval `ssh-agent`
